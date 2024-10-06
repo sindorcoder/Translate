@@ -1,8 +1,12 @@
+import { FaHistory } from "react-icons/fa"; 
+import { RiStarSFill } from "react-icons/ri"; 
 import { useEffect, useState } from "react";
 import "./App.css";
 import { Select, Input, Layout, Typography, Button } from "antd";
 import { sourceValue, targetValue, textValue } from "./redux/slice/translate";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "@mui/material";
+import { languages } from "./data/language";
 
 const { TextArea } = Input;
 const { Header, Content } = Layout;
@@ -13,15 +17,18 @@ function App() {
   const [{ data }, setData] = useState("");
   const { source, target, text } = useSelector((state) => state.translate);
 
+
   useEffect(() => {
+
     const loadData = async () => {
+
       try {
         const response = await fetch(
           "https://google-translator9.p.rapidapi.com/v2",
           {
             method: "POST",
             headers: {
-              "x-rapidapi-key": "216aaa2687msh91ec62caa74c1a8p1888b2jsnd4414ee7bbf9",
+              "x-rapidapi-key": "75cf7c8231mshf19a5aafcaa6d72p14e4adjsn215ca0739fa4",
               "x-rapidapi-host": "google-translator9.p.rapidapi.com",
               "Content-Type": "application/json",
             },
@@ -44,12 +51,31 @@ function App() {
     }
   }, [text, source, target]);
 
+  const selectOption = languages?.map((item) => ({
+    value: item.language,
+    label: item.name
+  }))
+
+  console.log(languages);
+
+
   return (
-    <Layout className="min-h-screen">
-      <Header className="bg-slate-500">
-        <Title level={2} className="text-[slate] text-center py-4">
-          Language Translator
-        </Title>
+    <Layout>
+      <Header className="bg-slate-500 flex items-center justify-between">
+        <Link href={"/"}>
+        <Title level={2} className="text-[slate] !font-bold text-center py-4">
+          Translator
+        </Title></Link>
+        <div className="flex items-center gap-10">
+          <span className="flex text-[26px] capitalize font-bold gap-2 items-center">
+            <RiStarSFill size={30} />
+          Saved
+          </span>
+          <span className="flex text-[26px] capitalize font-bold gap-2 items-center">
+            <FaHistory size={30} />
+            History
+          </span>
+        </div>
       </Header>
       <Content className="flex mt-[70px] flex-col gap-20 items-center p-12">
        <div className="flex gap-10">
@@ -59,42 +85,36 @@ function App() {
             <Select
               showSearch
               className="w-full"
-              defaultValue={"en"}
               placeholder="Select source language"
               filterOption={(input, option) =>
                 (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
               }
-              options={[
-                { value: "en", label: "English" },
-                { value: "ru", label: "Russian" },
-                { value: "uz", label: "Uzbek" },
-              ]}
+              options={selectOption}
               onChange={(e) => dispatch(sourceValue(e))}
             />
             <Select
               showSearch
-              defaultValue={"uz"}
               className="w-full"
               placeholder="Select target language"
               filterOption={(input, option) =>
                 (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
               }
-              options={[
-                { value: "en", label: "English" },
-                { value: "ru", label: "Russian" },
-                { value: "uz", label: "Uzbek" },
-              ]}
+              options={selectOption}
               onChange={(e) => dispatch(targetValue(e))}
             />
           </div>
           <TextArea
             rows={6}
-            onPressEnter={(e) => dispatch(textValue(e.target.value))}
+            onChange={(e) => dispatch(textValue(e.target.value))}
             style={{resize: "none"}}
           />
         </div>
-        <div className=" w-[700px] p-[20px] bg-white rounded-lg">
+        <div className="w-[700px] p-[20px] bg-white rounded-lg">
           <h1 className="text-2xl font-bold">{data?.translations[0]?.translatedText}</h1>
+          <br />
+          <br />
+          <br />    
+          <hr />
         </div>
        </div>
        <Button onClick={() => window.location.reload()} type="primary" size="large">Reload Page</Button>
