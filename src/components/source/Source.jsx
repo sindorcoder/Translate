@@ -1,4 +1,4 @@
-import { Select, Input, Form } from "antd";
+import { Select, Input } from "antd";
 const { TextArea } = Input;
 const Source = ({ selectOption, dispatch, sourceValue, textValue }) => {
   return (
@@ -15,9 +15,10 @@ const Source = ({ selectOption, dispatch, sourceValue, textValue }) => {
             options={selectOption}
             onChange={(e) => dispatch(sourceValue(e))}
           />
-          <Form>
-          <TextArea rows={6} />
-          </Form>
+          <TextArea
+            onChange={(e) => dispatch(textValue(e.target.value))}
+            rows={6}
+          />
         </div>
       </div>
     </section>

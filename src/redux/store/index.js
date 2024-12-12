@@ -1,10 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
 import translateSlice from "../slice/translate";
 const store = configureStore({
-     reducer: {
-     translate : translateSlice
-     }
-})
+  reducer: {
+    translate: translateSlice,
+  },
+});
 
-
-export default store
+export default store;
