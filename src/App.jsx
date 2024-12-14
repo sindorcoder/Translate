@@ -1,3 +1,4 @@
+import { CgArrowsExchangeAlt } from "react-icons/cg";
 import { BiSend } from "react-icons/bi";
 import { languages } from "./data/language";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,6 +10,9 @@ import { useEffect, useState } from "react";
 const App = () => {
   const dispatch = useDispatch();
   const [check, setCheck] = useState(false);
+  const [sourceText, setSourceText] = useState("en");
+  const [targetText, setTargetText] = useState("uz");
+  const [checkExchange, setCheckExchange] = useState(false);
   const [data, setData] = useState();
   const {
     source: sourceValues,
@@ -20,7 +24,6 @@ const App = () => {
     value: item.language,
     label: item.name,
   }));
-
   useEffect(() => {
     const loadData = async () => {
       try {
@@ -51,7 +54,12 @@ const App = () => {
       loadData();
       setCheck(false);
     }
-  }, [check]);
+    if (checkExchange) {
+      setSourceText(targetText);
+      setTargetText(sourceText);
+      setCheckExchange(false);
+    }
+  }, [check, checkExchange, sourceText, targetText]);
   return (
     <>
       <nav>
@@ -59,14 +67,20 @@ const App = () => {
       </nav>
       <main>
         <div className="max-w-[1240px] mx-auto p-4 bg-[#22333b] mt-[70px] rounded-lg min-h-[300px]">
-          <div className="flex items-start gap-5">
+          <div className="block md:flex items-start gap-5">
             <div className="w-full">
               <Source
                 dispatch={dispatch}
                 sourceValue={sourceValue}
                 textValue={textValue}
                 selectOption={selectOption}
+                sourceText={sourceText}
               />
+            </div>
+            <div className="flex items-center justify-center md:block  my-[20px] md:mt-[20px]">
+              <button onClick={() => setCheckExchange(true)}>
+                <CgArrowsExchangeAlt className="text-[40px] md:text-[30px]" color="white" />
+              </button>
             </div>
             <div className="w-full">
               <Target
@@ -74,6 +88,7 @@ const App = () => {
                 selectOption={selectOption}
                 targetValue={targetValue}
                 textValues={data}
+                targetText={targetText}
               />
             </div>
           </div>
