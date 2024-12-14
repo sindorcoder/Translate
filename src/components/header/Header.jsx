@@ -1,4 +1,4 @@
-import { BiHistory } from "react-icons/bi";
+import logo from "../../../public/logo.jpg"
 const Header = () => {
   return (
     <header className="bg-[#22333b] py-4">
@@ -6,7 +6,7 @@ const Header = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <img
-              src="/public/logo.jpg"
+              src={logo}
               alt="logo"
               loading="lazy"
               width={40}
